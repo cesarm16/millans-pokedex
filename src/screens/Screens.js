@@ -1,5 +1,6 @@
 const Screens = {
-	Main: 'Main'
+	Main: 'Main',
+	PokemonTopBar: 'PokemonTopBar'
 }
 
 export default Screens
