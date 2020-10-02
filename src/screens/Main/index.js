@@ -12,7 +12,14 @@ function Main({ componentId }) {
 	useEffect(() => {
 		fetch('https://pokeapi.co/api/v2/pokemon')
 			.then((response) => response.json())
-			.then((json) => setData(json.results))
+			.then((json) => {
+				let results = json.results
+				let promisesArray = results.map((result) => {
+					return fetch(result.url).then((response) => response.json())
+				})
+				return Promise.all(promisesArray)
+			})
+			.then((data) => setData(data))
 			.catch((error) => console.error(error))
 			.finally(() => setLoading(false))
 	}, [])
@@ -20,7 +27,9 @@ function Main({ componentId }) {
 	return (
 		<View style={styles.container}>
 			{isLoading ? (
-				<ActivityIndicator />
+				<View style={styles.loadingContainer}>
+					<ActivityIndicator />
+				</View>
 			) : (
 				<FlatList
 					ListHeaderComponent={
@@ -37,13 +46,12 @@ function Main({ componentId }) {
 					keyExtractor={({ name }, index) => name}
 					renderItem={({ item }) => (
 						<PokemonCard
+							pokemon={item}
 							onPress={() => {
 								Navigation.push(componentId, {
-									component: { name: Screens.Detail },
-									passProps: { pokemon: item }
+									component: { name: Screens.Detail, passProps: { pokemon: item } }
 								})
-							}}
-							{...item}></PokemonCard>
+							}}></PokemonCard>
 					)}
 					ItemSeparatorComponent={() => <View style={styles.separator}></View>}
 				/>
@@ -54,6 +62,7 @@ function Main({ componentId }) {
 
 const styles = StyleSheet.create({
 	container: { flex: 1 },
+	loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 	row: { flex: 1, justifyContent: 'space-between', paddingHorizontal: 16 },
 	separator: { height: 24 }
 })

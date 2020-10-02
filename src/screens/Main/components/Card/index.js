@@ -1,45 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { View, Image, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { Text } from '../../../../commons/components'
 import { capitalizeFirstLetter } from '../../../../commons/Helpers'
 import StyleGuide from './StyleGuide'
 
-function Card({ name, url, onPress }) {
-	const [isLoading, setLoading] = useState(true)
-	const [data, setData] = useState([])
-
-	useEffect(() => {
-		fetch(url)
-			.then((response) => response.json())
-			.then((json) => {
-				console.log('Card: ', json)
-				setData(json)
-			})
-			.catch((error) => console.error(error))
-			.finally(() => setLoading(false))
-	}, [])
-
+function Card({ pokemon, onPress }) {
 	return (
 		<TouchableWithoutFeedback onPress={onPress}>
-			<View
-				style={[
-					styles.container,
-					StyleGuide.types[isLoading ? 'normal' : data.types[0].type.name]
-				]}>
+			<View style={[styles.container, StyleGuide.types[pokemon.types[0].type.name]]}>
 				<Image source={POKEBALL} style={styles.pokeball}></Image>
-				{isLoading || (
-					<Image
-						source={{
-							uri: data.sprites.other['official-artwork'].front_default
-						}}
-						style={styles.image}></Image>
-				)}
+				<Image
+					source={{
+						uri: pokemon.sprites.other['official-artwork'].front_default
+					}}
+					style={styles.image}></Image>
+
 				<Text type="title3" style={{ color: 'white', fontWeight: 'bold' }}>
-					{capitalizeFirstLetter(name)}
+					{capitalizeFirstLetter(pokemon.name)}
 				</Text>
 
 				<View style={styles.badgeContainer}>
-					{isLoading || data.types.map((value, index) => <Badge type={value.type}></Badge>)}
+					{pokemon.types.map((value, index) => (
+						<Badge type={value.type}></Badge>
+					))}
 				</View>
 			</View>
 		</TouchableWithoutFeedback>
