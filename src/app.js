@@ -3,9 +3,14 @@ import { registerScreens } from './screens'
 import { setDefaultOptions } from './commons/Options'
 import Screens from './screens/Screens'
 
+import configureStore from './state/store'
+
+const { store, rehydrateStore } = configureStore()
+
 function start() {
-	registerScreens()
+	registerScreens(store)
 	setDefaultOptions()
+	rehydrateStore()
 	Navigation.events().registerAppLaunchedListener(async () => {
 		Navigation.dismissAllModals()
 		setRoot()
