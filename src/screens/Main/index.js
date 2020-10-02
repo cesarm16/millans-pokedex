@@ -55,7 +55,10 @@ function Main({ componentId }) {
 										passProps: { pokemon: item },
 										options: {
 											animations: getAnimations(item),
-											topBar: { background: { color: Colors.types[item.types[0].type.name] } }
+											topBar: {
+												background: { color: Colors.types[item.types[0].type.name] },
+												backButton: { color: Colors.background }
+											}
 										}
 									}
 								})

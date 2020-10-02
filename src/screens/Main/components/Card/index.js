@@ -37,7 +37,7 @@ function Badge({ type }) {
 	return (
 		<View style={styles.badge}>
 			<Text style={styles.badgeText} type="caption">
-				{type.name}
+				{capitalizeFirstLetter(type.name)}
 			</Text>
 		</View>
 	)
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 		width: 160,
 		height: 120,
 		backgroundColor: 'lightgray',
-		borderRadius: 8,
+		borderRadius: 16,
 		paddingLeft: 16,
 		paddingTop: 24,
 		borderWidth: 1,
@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
 	badge: {
 		backgroundColor: 'rgba(250,250,250,0.3)',
 		borderRadius: 10,
-		paddingHorizontal: 4,
-		paddingVertical: 2,
+		paddingHorizontal: 8,
+		paddingVertical: 0,
 		marginBottom: 4
 	},
 	badgeContainer: { marginTop: 4, alignItems: 'flex-start' },
