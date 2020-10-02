@@ -1,16 +1,50 @@
-import React from 'react'
-import { ScrollView, View, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
 import { SearchBar, Text } from '../../commons/components'
+import PokemonCard from './components/Card'
 
 function Main({ componentId }) {
+	const [isLoading, setLoading] = useState(true)
+	const [data, setData] = useState([])
+
+	useEffect(() => {
+		fetch('https://pokeapi.co/api/v2/pokemon')
+			.then((response) => response.json())
+			.then((json) => setData(json.results))
+			.catch((error) => console.error(error))
+			.finally(() => setLoading(false))
+	}, [])
+
 	return (
-		<ScrollView contentContainerStyle={styles.container}>
-			<Text type="title1">Pokedex</Text>
-			<SearchBar style={{ marginVertical: 16 }} componentId={componentId}></SearchBar>
-		</ScrollView>
+		<View style={styles.container}>
+			{isLoading ? (
+				<ActivityIndicator />
+			) : (
+				<FlatList
+					ListHeaderComponent={
+						<View style={{ paddingHorizontal: 16, paddingTop: 12 }}>
+							<Text type="title1">Pokedex</Text>
+							<SearchBar
+								style={{ marginTop: 8, marginBottom: 24 }}
+								componentId={componentId}></SearchBar>
+						</View>
+					}
+					columnWrapperStyle={styles.row}
+					data={data}
+					numColumns={2}
+					keyExtractor={({ name }, index) => name}
+					renderItem={({ item }) => <PokemonCard {...item}></PokemonCard>}
+					ItemSeparatorComponent={() => <View style={styles.separator}></View>}
+				/>
+			)}
+		</View>
 	)
 }
 
-const styles = StyleSheet.create({ container: { paddingHorizontal: 16, paddingTop: 16 } })
+const styles = StyleSheet.create({
+	container: { flex: 1 },
+	row: { flex: 1, justifyContent: 'space-between', paddingHorizontal: 16 },
+	separator: { height: 24 }
+})
 
 export default Main
