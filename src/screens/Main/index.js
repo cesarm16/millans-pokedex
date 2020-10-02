@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
+import { Navigation } from 'react-native-navigation'
 import { SearchBar, Text } from '../../commons/components'
+import Screens from '../Screens'
 import PokemonCard from './components/Card'
 
 function Main({ componentId }) {
@@ -33,7 +35,16 @@ function Main({ componentId }) {
 					data={data}
 					numColumns={2}
 					keyExtractor={({ name }, index) => name}
-					renderItem={({ item }) => <PokemonCard {...item}></PokemonCard>}
+					renderItem={({ item }) => (
+						<PokemonCard
+							onPress={() => {
+								Navigation.push(componentId, {
+									component: { name: Screens.Detail },
+									passProps: { pokemon: item }
+								})
+							}}
+							{...item}></PokemonCard>
+					)}
 					ItemSeparatorComponent={() => <View style={styles.separator}></View>}
 				/>
 			)}

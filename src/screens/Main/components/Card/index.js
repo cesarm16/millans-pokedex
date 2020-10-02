@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { View, Image, StyleSheet } from 'react-native'
+import { View, Image, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import { Text } from '../../../../commons/components'
 import { capitalizeFirstLetter } from '../../../../commons/Helpers'
 import StyleGuide from './StyleGuide'
 
-function Card({ name, url }) {
+function Card({ name, url, onPress }) {
 	const [isLoading, setLoading] = useState(true)
 	const [data, setData] = useState([])
 
@@ -20,24 +20,29 @@ function Card({ name, url }) {
 	}, [])
 
 	return (
-		<View
-			style={[styles.container, StyleGuide.types[isLoading ? 'normal' : data.types[0].type.name]]}>
-			<Image source={POKEBALL} style={styles.pokeball}></Image>
-			{isLoading || (
-				<Image
-					source={{
-						uri: data.sprites.other['official-artwork'].front_default
-					}}
-					style={styles.image}></Image>
-			)}
-			<Text type="title3" style={{ color: 'white', fontWeight: 'bold' }}>
-				{capitalizeFirstLetter(name)}
-			</Text>
+		<TouchableWithoutFeedback onPress={onPress}>
+			<View
+				style={[
+					styles.container,
+					StyleGuide.types[isLoading ? 'normal' : data.types[0].type.name]
+				]}>
+				<Image source={POKEBALL} style={styles.pokeball}></Image>
+				{isLoading || (
+					<Image
+						source={{
+							uri: data.sprites.other['official-artwork'].front_default
+						}}
+						style={styles.image}></Image>
+				)}
+				<Text type="title3" style={{ color: 'white', fontWeight: 'bold' }}>
+					{capitalizeFirstLetter(name)}
+				</Text>
 
-			<View style={styles.badgeContainer}>
-				{isLoading || data.types.map((value, index) => <Badge type={value.type}></Badge>)}
+				<View style={styles.badgeContainer}>
+					{isLoading || data.types.map((value, index) => <Badge type={value.type}></Badge>)}
+				</View>
 			</View>
-		</View>
+		</TouchableWithoutFeedback>
 	)
 }
 
