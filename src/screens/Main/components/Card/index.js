@@ -10,12 +10,16 @@ function Card({ pokemon, onPress }) {
 			<View style={[styles.container, StyleGuide.types[pokemon.types[0].type.name]]}>
 				<Image source={POKEBALL} style={styles.pokeball}></Image>
 				<Image
+					nativeID={pokemon.name + 'card'}
 					source={{
 						uri: pokemon.sprites.other['official-artwork'].front_default
 					}}
 					style={styles.image}></Image>
 
-				<Text type="title3" style={{ color: 'white', fontWeight: 'bold' }}>
+				<Text
+					type="title3"
+					style={{ color: 'white', fontWeight: 'bold' }}
+					nativeID={pokemon.name + 'titlecard'}>
 					{capitalizeFirstLetter(pokemon.name)}
 				</Text>
 

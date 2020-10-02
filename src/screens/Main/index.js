@@ -4,6 +4,7 @@ import { Navigation } from 'react-native-navigation'
 import { SearchBar, Text } from '../../commons/components'
 import Screens from '../Screens'
 import PokemonCard from './components/Card'
+import Colors from '../../commons/Colors'
 
 function Main({ componentId }) {
 	const [isLoading, setLoading] = useState(true)
@@ -49,7 +50,14 @@ function Main({ componentId }) {
 							pokemon={item}
 							onPress={() => {
 								Navigation.push(componentId, {
-									component: { name: Screens.Detail, passProps: { pokemon: item } }
+									component: {
+										name: Screens.Detail,
+										passProps: { pokemon: item },
+										options: {
+											animations: getAnimations(item),
+											topBar: { background: { color: Colors.types[item.types[0].type.name] } }
+										}
+									}
 								})
 							}}></PokemonCard>
 					)}
@@ -58,6 +66,39 @@ function Main({ componentId }) {
 			)}
 		</View>
 	)
+}
+
+const MULTIPLIER = 0.65
+const LONG_DURATION = 350 * MULTIPLIER
+const SHORT_DURATION = 190 * MULTIPLIER
+
+function getAnimations(item) {
+	return {
+		push: {
+			waitForRender: true,
+			content: {
+				alpha: {
+					from: 0,
+					to: 1,
+					duration: LONG_DURATION
+				}
+			},
+			sharedElementTransitions: [
+				{
+					fromId: item.name + 'card',
+					toId: item.name + 'detail',
+					interpolation: 'overshoot',
+					duration: LONG_DURATION
+				},
+				{
+					fromId: item.name + 'titlecard',
+					toId: item.name + 'titledetail',
+					interpolation: 'overshoot',
+					duration: SHORT_DURATION
+				}
+			]
+		}
+	}
 }
 
 const styles = StyleSheet.create({

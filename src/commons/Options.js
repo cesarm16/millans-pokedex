@@ -8,6 +8,7 @@ function setDefaultOptions() {
 		topBar: {
 			title: { component: { name: Screens.PokemonTopBar } },
 			background: { color: Colors.background },
+			// drawBehind: true,
 			borderHeight: 0,
 			noBorder: true
 		}
