@@ -37,7 +37,7 @@ function SearchBar({ componentId, style, onFocus, onBlur, ...props }) {
 	)
 }
 
-SearchBar.defaultProps = { placeholder: '🔍 Buscar' }
+SearchBar.defaultProps = { placeholder: '🔍  Busca cualquier Pokémon' }
 
 SearchBar.propTypes = {
 	componentId: PropTypes.string.isRequired,

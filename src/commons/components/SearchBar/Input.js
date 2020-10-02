@@ -1,5 +1,6 @@
 import React from 'react'
-import { View, TextInput, StyleSheet } from 'react-native'
+import { View, TextInput, StyleSheet, Platform } from 'react-native'
+import Colors from '../../Colors'
 
 function Input({ style, ...props }) {
 	return (
@@ -17,11 +18,11 @@ function Input({ style, ...props }) {
 const styles = StyleSheet.create({
 	container: {
 		paddingHorizontal: 16,
-		backgroundColor: 'lightgray',
+		backgroundColor: '#E4E5E6',
 		borderRadius: 30,
 		overflow: 'hidden'
 	},
-	input: { height: 40, fontSize: 17 }
+	input: { height: 32, fontSize: 15, fontFamily: Platform.OS === 'ios' ? 'Avenir' : 'Roboto' }
 })
 
 export default Input
