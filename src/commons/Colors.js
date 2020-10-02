@@ -1,5 +1,43 @@
 const colors = {
-	background: '#f1f1f1'
+	background: '#f1f1f1',
+	types: {
+		normal: '#A8A878',
+		normaldark: '#6D6D4E',
+		fire: '#F08030',
+		firedark: '#9C531F',
+		water: '#6890F0',
+		waterdark: '#445E9C',
+		grass: '#78C850',
+		grassdark: '#4E8234',
+		electric: '#F8D030',
+		electricdark: '#A1871F',
+		ice: '#98D8D8',
+		icedark: '#638D8D',
+		fighting: '#C03028',
+		fightingdark: '#7D1F1A',
+		poison: '#A140A0',
+		posiondark: '#682A68',
+		ground: '#E0C068',
+		grounddark: '#927D44',
+		flying: '#A890F0',
+		flyingdark: '#6D5E9C',
+		psychic: '#F85888',
+		psychicdark: '#A13959',
+		bug: '#A8B820',
+		buddark: '#6D7815',
+		rock: '#B9A038',
+		rockdark: '#786824',
+		ghost: '#705898',
+		ghostdark: '#493963',
+		dark: '#705848',
+		darkdark: '#49392F',
+		dragon: '#7038F8',
+		dragondark: '#4924A1',
+		steel: '#B8B8D0',
+		steeldark: '#787887',
+		fairy: '#F0B6BC',
+		fairydark: '#9B6470'
+	}
 }
 
 export default colors
