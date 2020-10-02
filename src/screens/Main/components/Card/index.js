@@ -21,7 +21,7 @@ function Card({ pokemon, onPress }) {
 
 				<View style={styles.badgeContainer}>
 					{pokemon.types.map((value, index) => (
-						<Badge type={value.type}></Badge>
+						<Badge type={value.type} key={value.slot}></Badge>
 					))}
 				</View>
 			</View>
