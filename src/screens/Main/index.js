@@ -97,8 +97,10 @@ function Main({ componentId }) {
 
 	let items = []
 
-	if (isNumeric(search)) items = [pokemons.find((e) => getPokemonIdFromUrl(e.url) == search)]
-	else
+	if (isNumeric(search)) {
+		const pokemon = pokemons.find((e) => getPokemonIdFromUrl(e.url) == search)
+		if (pokemon) items = [pokemon]
+	} else
 		items =
 			search.length >= 3
 				? pokemons.filter((pokemon) => {
@@ -121,7 +123,7 @@ function Main({ componentId }) {
 			renderItem={renderItem}
 			removeClippedSubviews
 			keyboardDismissMode="on-drag"
-			ListEmptyComponent={() => <Text style={{ marginLeft: 32 }}>No results</Text>}
+			ListEmptyComponent={<Text style={{ marginLeft: 32 }}>No results</Text>}
 			ItemSeparatorComponent={() => <View style={styles.separator}></View>}
 		/>
 	)
