@@ -4,8 +4,9 @@ import { Provider } from 'react-redux'
 import Screens from './Screens'
 
 import Main from './Main'
-import PokemonTopBar from './PokemonTopBar'
 import Detail from './Detail'
+import Camera from './Camera'
+import Settings from './Settings'
 
 function registerScreens(store) {
 	function registerScreenWithRedux(n, ReduxScreen) {
@@ -26,8 +27,9 @@ function registerScreens(store) {
 
 	registerScreenWithRedux(Screens.Main, Main)
 	registerScreenWithRedux(Screens.Detail, Detail)
+	registerScreenWithRedux(Screens.Settings, Settings)
 
-	registerScreen(Screens.PokemonTopBar, PokemonTopBar)
+	registerScreen(Screens.Camera, Camera)
 }
 
 export { registerScreens }

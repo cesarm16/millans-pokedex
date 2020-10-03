@@ -1,14 +1,15 @@
 import { Navigation } from 'react-native-navigation'
+import { Platform } from 'react-native'
 import Colors from './Colors'
-import Screens from '../screens/Screens'
 
 function setDefaultOptions() {
 	Navigation.setDefaultOptions({
 		layout: { componentBackgroundColor: Colors.background, orientation: ['portrait'] },
 		topBar: {
-			title: { component: { name: Screens.PokemonTopBar } },
+			title: { fontFamily: Platform.OS === 'ios' ? 'Avenir' : 'Roboto' },
+			largeTitle: { fontFamily: Platform.OS === 'ios' ? 'Avenir' : 'Roboto' },
+			backButton: { title: '' },
 			background: { color: Colors.background },
-			// drawBehind: true,
 			borderHeight: 0,
 			noBorder: true
 		}

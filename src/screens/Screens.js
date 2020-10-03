@@ -1,7 +1,8 @@
 const Screens = {
 	Main: 'Main',
-	PokemonTopBar: 'PokemonTopBar',
-	Detail: 'Detail'
+	Detail: 'Detail',
+	Camera: 'Camera',
+	Settings: 'Settings'
 }
 
 export default Screens
