@@ -4,7 +4,7 @@ import { Navigation } from 'react-native-navigation'
 import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { fetchAllPokemons } from '../../state/ducks/Pokemons/actions'
-import { SearchBar } from '../../commons/components'
+import { SearchBar, Text } from '../../commons/components'
 import { useNavigationButtonPressed } from '../../commons/Helpers'
 import Screens from '../Screens'
 import PokemonCard from './components/Card'
@@ -125,6 +125,7 @@ function Main({ componentId }) {
 			renderItem={renderItem}
 			removeClippedSubviews
 			keyboardDismissMode="on-drag"
+			ListEmptyComponent={() => <Text style={{ marginLeft: 32 }}>No results</Text>}
 			ItemSeparatorComponent={() => <View style={styles.separator}></View>}
 		/>
 	)
