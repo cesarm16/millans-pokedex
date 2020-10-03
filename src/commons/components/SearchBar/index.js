@@ -3,6 +3,7 @@ import { View, Platform } from 'react-native'
 import PropTypes from 'prop-types'
 import { Navigation } from 'react-native-navigation'
 import Input from './Input'
+import i18n from '../../i18n'
 
 function SearchBar({ componentId, style, onFocus, onBlur, ...props }) {
 	function searchBarFocused() {
@@ -37,7 +38,7 @@ function SearchBar({ componentId, style, onFocus, onBlur, ...props }) {
 	)
 }
 
-SearchBar.defaultProps = { placeholder: '🔍  Search by Name or Number' }
+SearchBar.defaultProps = { placeholder: i18n.t('searchbar') }
 
 SearchBar.propTypes = {
 	componentId: PropTypes.string.isRequired,
