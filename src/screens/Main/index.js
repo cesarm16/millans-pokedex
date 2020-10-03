@@ -4,7 +4,7 @@ import { Navigation } from 'react-native-navigation'
 import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { fetchAllPokemons } from '../../state/ducks/Pokemons/actions'
-import { SearchBar, Text } from '../../commons/components'
+import { SearchBar } from '../../commons/components'
 import { useNavigationButtonPressed } from '../../commons/Helpers'
 import Screens from '../Screens'
 import PokemonCard from './components/Card'
@@ -12,6 +12,7 @@ import Colors from '../../commons/Colors'
 import ButtonIds from '../ButtonIds'
 
 function Main({ componentId }) {
+	const [search, setSearch] = useState('')
 	const data = useSelector((state) => state.pokemons)
 	const pokemons = data.list
 	const dispatch = useDispatch()
@@ -57,8 +58,12 @@ function Main({ componentId }) {
 		)
 
 	const header = (
-		<View style={{ paddingHorizontal: 16, marginBottom: 24 }}>
-			<SearchBar style={{ marginTop: 8 }} componentId={componentId}></SearchBar>
+		<View style={styles.headerContainer}>
+			<SearchBar
+				autoCapitalize="none"
+				componentId={componentId}
+				value={search}
+				onChangeText={setSearch}></SearchBar>
 		</View>
 	)
 
@@ -87,11 +92,33 @@ function Main({ componentId }) {
 		)
 	}
 
+	let items = []
+
+	if (isNumeric(search)) {
+		items = [
+			pokemons.find((e) => {
+				const urlsplit = e.url.split('/')
+				const pokemonindex = urlsplit[urlsplit.length - 2]
+				return pokemonindex == search
+			})
+		]
+	} else
+		items =
+			search.length >= 3
+				? pokemons.filter((pokemon) => {
+						const decomposedName = pokemon.name
+							.toLowerCase()
+							.normalize('NFD')
+							.replace(/[\u0300-\u036f]/g, '')
+						return decomposedName.indexOf(search.toLowerCase()) > -1
+				  })
+				: pokemons.slice(0, 150)
+
 	return (
 		<FlatList
 			ListHeaderComponent={header}
 			columnWrapperStyle={styles.row}
-			data={pokemons.slice(0, 150)}
+			data={items}
 			numColumns={3}
 			initialNumToRender={15}
 			keyExtractor={({ name }) => name}
@@ -101,6 +128,11 @@ function Main({ componentId }) {
 			ItemSeparatorComponent={() => <View style={styles.separator}></View>}
 		/>
 	)
+}
+
+function isNumeric(str) {
+	if (typeof str != 'string') return false
+	return !isNaN(str) && !isNaN(parseFloat(str))
 }
 
 const MULTIPLIER = 0.65
@@ -139,7 +171,8 @@ function getAnimations(item) {
 const styles = StyleSheet.create({
 	loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 	row: { flex: 1, justifyContent: 'space-between', paddingHorizontal: 16 },
-	separator: { height: 16 }
+	separator: { height: 16 },
+	headerContainer: { paddingHorizontal: 16, marginBottom: 24, marginTop: 8 }
 })
 
 export default Main
