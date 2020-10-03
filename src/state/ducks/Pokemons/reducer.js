@@ -7,8 +7,7 @@ export default function (state = initialState.pokemons, action) {
 			return {
 				...state,
 				fetched: true,
-				list: [...action.payload],
-				progress: Math.round((100 * action.endRange) / 1050)
+				list: [...action.payload]
 			}
 		case FETCH_POKEMON:
 			const i = state.list.findIndex((e) => e.name === action.payload.name)

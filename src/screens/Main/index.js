@@ -18,7 +18,7 @@ function Main({ componentId }) {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-		dispatch(fetchAllPokemons()).catch((error) => console.error(error))
+		if (!data.fetched) dispatch(fetchAllPokemons()).catch((error) => console.error(error))
 	}, [])
 
 	useNavigationButtonPressed(({ buttonId }) => {

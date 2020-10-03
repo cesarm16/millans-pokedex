@@ -13,9 +13,9 @@ const { store, rehydrateStore } = configureStore()
 function start() {
 	registerScreens(store)
 	setDefaultOptions()
-	rehydrateStore()
 	Navigation.events().registerAppLaunchedListener(async () => {
 		Navigation.dismissAllModals()
+		await rehydrateStore()
 		setRoot()
 	})
 }
