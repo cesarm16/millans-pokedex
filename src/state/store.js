@@ -5,12 +5,11 @@ import ReduxThunk from 'redux-thunk'
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant'
 import rootReducer from './ducks'
 import { createLogger } from 'redux-logger'
-import fetchMiddleware from './utils/fetchMiddleware'
 import initialState from './utils/initialState'
 
 const middleware = __DEV__
-	? [ReduxThunk, reduxImmutableStateInvariant(), fetchMiddleware, createLogger({ collapsed: true })]
-	: [ReduxThunk, fetchMiddleware]
+	? [ReduxThunk, reduxImmutableStateInvariant(), createLogger({ collapsed: true })]
+	: [ReduxThunk]
 
 const persistConfig = {
 		key: 'root',

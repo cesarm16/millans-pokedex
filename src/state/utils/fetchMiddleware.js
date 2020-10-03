@@ -1,9 +1,9 @@
 const fetchMiddleware = (store) => (next) => (action) => {
 	if (!action || !action.fetch) return next(action)
 
-	const { endpoint } = action.fetch
+	const { endpoint, url } = action.fetch
 
-	return fetch('https://pokeapi.co/api/v2/' + endpoint)
+	return fetch(url || 'https://pokeapi.co/api/v2/' + endpoint)
 		.then((response) => response.json())
 		.then((response) => handleResponse(response, action, next))
 		.catch((error) => handleErrors(error, action, next))

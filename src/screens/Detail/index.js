@@ -6,14 +6,16 @@ import StyleGuide from '../Main/components/Card/StyleGuide'
 import BottomSheet from './BottomSheet'
 
 function Detail({ pokemon }) {
-	const badges = pokemon.types.map((value, index) => (
+	const { properties } = pokemon
+
+	const badges = properties.types.map((value, index) => (
 		<Badge type={value.type} key={value.slot}></Badge>
 	))
 
 	return (
 		<ScrollView
 			contentInsetAdjustmentBehavior="never"
-			style={[styles.container, StyleGuide.types[pokemon.types[0].type.name]]}
+			style={[styles.container, StyleGuide.types[properties.types[0].type.name]]}
 			scrollEnabled={true}>
 			<Image source={POKEBALL} style={styles.pokeball}></Image>
 			<View style={styles.titleContainer}>
@@ -21,15 +23,15 @@ function Detail({ pokemon }) {
 					{capitalizeFirstLetter(pokemon.name)}
 				</Text>
 				<Text type="title3" style={styles.whiteText}>
-					#{PadWithZeroes(pokemon.order)}
+					#{PadWithZeroes(properties.id)}
 				</Text>
 			</View>
 			<View style={styles.badgeContainer}>{badges}</View>
 			<Image
 				nativeID={pokemon.name + 'detail'}
-				source={{ uri: pokemon.sprites.other['official-artwork'].front_default }}
+				source={{ uri: properties.sprites.other['official-artwork'].front_default }}
 				style={styles.image}></Image>
-			<BottomSheet pokemon={pokemon}></BottomSheet>
+			<BottomSheet pokemon={properties}></BottomSheet>
 		</ScrollView>
 	)
 }

@@ -1,0 +1,2 @@
+export const FETCH_THEM_ALL = 'FETCH_THEM_ALL'
+export const FETCH_POKEMON = 'FETCH_POKEMON'
