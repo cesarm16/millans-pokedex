@@ -17,3 +17,8 @@ export function useNavigationButtonPressed(handler, componentId) {
 		}
 	}, [componentId])
 }
+
+export function getPokemonIdFromUrl(url) {
+	const urlsplit = url.split('/')
+	return urlsplit[urlsplit.length - 2]
+}

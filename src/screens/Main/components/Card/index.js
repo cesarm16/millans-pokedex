@@ -1,48 +1,55 @@
 import React, { useEffect } from 'react'
-import { View, Image, StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { View, Image, StyleSheet, TouchableWithoutFeedback, ActivityIndicator } from 'react-native'
 import { Text } from '../../../../commons/components'
 import { capitalizeFirstLetter } from '../../../../commons/Helpers'
-import { fetchPokemonProperties } from '../../../../state/ducks/Pokemons/actions'
+import { fetchPokemon } from '../../../../state/ducks/Pokemon/actions'
 import StyleGuide from './StyleGuide'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-const Card = React.memo(({ pokemon, onPress }) => {
-	const { fetched, properties } = pokemon
+const Card = React.memo(({ pokemonId, name, url, onPress }) => {
+	const pokemon = useSelector((state) => state.pokemon[pokemonId])
+
 	const dispatch = useDispatch()
 
-	const boxStyle = fetched ? StyleGuide.types[properties.types[0].type.name] : null
+	const boxStyle = pokemon ? StyleGuide.types[pokemon.types[0].type.name] : null
 
-	const badges = fetched && (
+	const badges = pokemon && (
 		<View style={styles.badgeContainer}>
-			{properties.types.map((value, index) => (
+			{pokemon.types.map((value, index) => (
 				<Badge type={value.type} key={value.slot}></Badge>
 			))}
 		</View>
 	)
 
-	const pokemonImg = fetched && (
+	const pokemonImg = pokemon ? (
 		<Image
 			nativeID={pokemon.name + 'card'}
 			source={{
-				uri: properties.sprites.other['official-artwork'].front_default
+				uri: pokemon.sprites.other['official-artwork'].front_default
 			}}
 			style={styles.image}></Image>
+	) : (
+		<ActivityIndicator style={styles.loader}></ActivityIndicator>
 	)
 
 	useEffect(() => {
-		if (!fetched) dispatch(fetchPokemonProperties(pokemon))
+		if (!pokemon) dispatch(fetchPokemon(url))
 	}, [])
 
+	function customOnPress() {
+		onPress(pokemon.types[0].type.name)
+	}
+
 	return (
-		<TouchableWithoutFeedback onPress={onPress} disabled={!fetched}>
+		<TouchableWithoutFeedback onPress={customOnPress} disabled={!pokemon}>
 			<View style={[styles.container, boxStyle]}>
 				<Image source={POKEBALL} style={styles.pokeball}></Image>
 				{pokemonImg}
 				<Text
 					type="headline"
 					style={{ color: 'white', fontWeight: 'bold' }}
-					nativeID={pokemon.name + 'titlecard'}>
-					{capitalizeFirstLetter(pokemon.name)}
+					nativeID={name + 'titlecard'}>
+					{capitalizeFirstLetter(name)}
 				</Text>
 				{badges}
 			</View>
@@ -80,6 +87,7 @@ const styles = StyleSheet.create({
 		bottom: -4,
 		right: -4
 	},
+	loader: { position: 'absolute', bottom: 8, right: 8 },
 	badge: {
 		backgroundColor: 'rgba(250,250,250,0.3)',
 		borderRadius: 10,
@@ -94,7 +102,14 @@ const styles = StyleSheet.create({
 		fontSize: 8,
 		lineHeight: 12
 	},
-	pokeball: { position: 'absolute', opacity: 0.15, bottom: -8, right: -8, height: 100, width: 100 }
+	pokeball: {
+		position: 'absolute',
+		opacity: 0.15,
+		bottom: -12,
+		right: -16,
+		height: 100,
+		width: 100
+	}
 })
 
 export default Card

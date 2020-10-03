@@ -1,36 +1,34 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { View, ActivityIndicator, StyleSheet, Image } from 'react-native'
 import { Text } from '../../commons/components'
 import ElevatedBox from './components/ElevatedBox'
 import { capitalizeFirstLetter } from '../../commons/Helpers'
+import { fetchPokemonSpecies } from '../../state/ducks/Species/actions'
+import { useDispatch, useSelector } from 'react-redux'
 
-function About({ pokemon, dataFetched }) {
-	const [isLoading, setLoading] = useState(true)
-	const [data, setData] = useState([])
+function About({ pokemonId }) {
+	if (!pokemonId) return null
 
-	useEffect(() => {
-		fetch(pokemon.species.url)
-			.then((response) => response.json())
-			.then((json) => {
-				setData(json)
-				if (dataFetched) dataFetched()
-			})
-			.catch((error) => console.error(error))
-			.finally(() => setLoading(false))
-	}, [])
-
-	if (isLoading) return <ActivityIndicator />
+	const dispatch = useDispatch()
+	const pokemon = useSelector((state) => state.pokemon[pokemonId])
+	const species = useSelector((state) => state.species[pokemonId])
 
 	const { sprites } = pokemon
 
-	const description = data.flavor_text_entries[44].flavor_text.replace(/(\r\n|\n|\r)/gm, ' ')
+	useEffect(() => {
+		if (!species) dispatch(fetchPokemonSpecies(pokemon.species.url))
+	}, [])
+
+	if (!species) return <ActivityIndicator />
+
+	const description = species.flavor_text_entries[44].flavor_text.replace(/(\r\n|\n|\r)/gm, ' ')
 
 	const height = pokemon.height * 10 + ' cm (' + cmToFeetInches(pokemon.height * 10) + ')'
 
 	const weight = pokemon.weight / 10 + ' kg (' + (pokemon.weight * 0.2205).toFixed(2) + ' lbs)'
 
-	const eggGroup = data.egg_groups.map((value, index) => {
-		return capitalizeFirstLetter(value.name) + (data.egg_groups.length > index + 1 ? ', ' : '')
+	const eggGroup = species.egg_groups.map((value, index) => {
+		return capitalizeFirstLetter(value.name) + (species.egg_groups.length > index + 1 ? ', ' : '')
 	})
 
 	return (
@@ -56,14 +54,14 @@ function About({ pokemon, dataFetched }) {
 					Name
 				</Text>
 				<Text type="description">
-					{data.names[8].name} - {data.names[0].name}
+					{species.names[8].name} - {species.names[0].name}
 				</Text>
 			</View>
 			<View style={[styles.propertyRow, { marginTop: 16 }]}>
 				<Text type="property" style={styles.property}>
 					Species
 				</Text>
-				<Text type="description">{data.genera[7].genus}</Text>
+				<Text type="description">{species.genera[7].genus}</Text>
 			</View>
 			<View style={styles.propertyRow}>
 				<Text type="property" style={styles.property}>
@@ -73,11 +71,11 @@ function About({ pokemon, dataFetched }) {
 					<Text type="description" style={{ color: 'cornflowerblue' }}>
 						♂️
 					</Text>
-					{12.5 * (8 - data.gender_rate) + '%  '}{' '}
+					{12.5 * (8 - species.gender_rate) + '%  '}{' '}
 					<Text type="description" style={{ color: 'hotpink' }}>
 						♀️
 					</Text>
-					{12.5 * data.gender_rate}%
+					{12.5 * species.gender_rate}%
 				</Text>
 			</View>
 			<View style={styles.propertyRow}>
@@ -90,27 +88,27 @@ function About({ pokemon, dataFetched }) {
 				<Text type="property" style={styles.property}>
 					Catch rate
 				</Text>
-				<Text type="description">{data.capture_rate}</Text>
+				<Text type="description">{species.capture_rate}</Text>
 			</View>
 			<View style={styles.propertyRow}>
 				<Text type="property" style={styles.property}>
 					Generation
 				</Text>
-				<Text type="description">{capitalizeFirstLetter(data.generation.name)}</Text>
+				<Text type="description">{capitalizeFirstLetter(species.generation.name)}</Text>
 			</View>
 			<View style={styles.propertyRow}>
 				<Text type="property" style={styles.property}>
 					Hatch time
 				</Text>
 				<Text type="description">
-					{data.hatch_counter} cycles - {255 * (data.hatch_counter + 1)} steps
+					{species.hatch_counter} cycles - {255 * (species.hatch_counter + 1)} steps
 				</Text>
 			</View>
 			<View style={styles.propertyRow}>
 				<Text type="property" style={styles.property}>
 					Leveling rate
 				</Text>
-				<Text type="description">{capitalizeFirstLetter(data.growth_rate.name)}</Text>
+				<Text type="description">{capitalizeFirstLetter(species.growth_rate.name)}</Text>
 			</View>
 			<Text type="headline" style={{ marginTop: 24 }}>
 				Location

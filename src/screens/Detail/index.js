@@ -4,18 +4,21 @@ import { Text } from '../../commons/components'
 import { capitalizeFirstLetter } from '../../commons/Helpers'
 import StyleGuide from '../Main/components/Card/StyleGuide'
 import BottomSheet from './BottomSheet'
+import { useSelector } from 'react-redux'
 
-function Detail({ pokemon }) {
-	const { properties } = pokemon
+function Detail({ pokemonId }) {
+	const pokemon = useSelector((state) => state.pokemon[pokemonId])
 
-	const badges = properties.types.map((value, index) => (
+	if (!pokemon) return null
+
+	const badges = pokemon.types.map((value, index) => (
 		<Badge type={value.type} key={value.slot}></Badge>
 	))
 
 	return (
 		<ScrollView
 			contentInsetAdjustmentBehavior="never"
-			style={[styles.container, StyleGuide.types[properties.types[0].type.name]]}
+			style={[styles.container, StyleGuide.types[pokemon.types[0].type.name]]}
 			scrollEnabled={true}>
 			<Image source={POKEBALL} style={styles.pokeball}></Image>
 			<View style={styles.titleContainer}>
@@ -23,15 +26,15 @@ function Detail({ pokemon }) {
 					{capitalizeFirstLetter(pokemon.name)}
 				</Text>
 				<Text type="title3" style={styles.whiteText}>
-					#{PadWithZeroes(properties.id)}
+					#{PadWithZeroes(pokemon.id)}
 				</Text>
 			</View>
 			<View style={styles.badgeContainer}>{badges}</View>
 			<Image
 				nativeID={pokemon.name + 'detail'}
-				source={{ uri: properties.sprites.other['official-artwork'].front_default }}
+				source={{ uri: pokemon.sprites.other['official-artwork'].front_default }}
 				style={styles.image}></Image>
-			<BottomSheet pokemon={properties}></BottomSheet>
+			<BottomSheet pokemonId={pokemon.id}></BottomSheet>
 		</ScrollView>
 	)
 }
@@ -81,5 +84,7 @@ const styles = StyleSheet.create({
 	},
 	badgeText: { color: 'white', fontWeight: 'bold' }
 })
+
+Detail.defaultProps = { pokemonId: 1 }
 
 export default Detail

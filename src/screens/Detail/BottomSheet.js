@@ -4,7 +4,7 @@ import { Text } from '../../commons/components'
 import Colors from '../../commons/Colors'
 import About from './About'
 
-function BottomSheetDetail({ pokemon }) {
+function BottomSheetDetail({ pokemonId }) {
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
@@ -14,7 +14,7 @@ function BottomSheetDetail({ pokemon }) {
 				<Tab>Moves</Tab>
 			</View>
 			<View style={styles.body}>
-				<About pokemon={pokemon}></About>
+				<About pokemonId={pokemonId}></About>
 			</View>
 			<View style={styles.excedent}></View>
 		</View>

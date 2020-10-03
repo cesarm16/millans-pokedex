@@ -1,4 +1,4 @@
-import { FETCH_THEM_ALL, FETCH_POKEMON } from './constants'
+import { FETCH_THEM_ALL, FIRST_GENERATION_POKEMON } from './constants'
 
 export function fetchAllPokemons() {
 	return (dispatch) =>
@@ -6,23 +6,13 @@ export function fetchAllPokemons() {
 			.then((response) => response.json())
 			.then((json) => {
 				let { results } = json
-				let promises = results.map((result, index) => {
-					if (index <= 150)
-						return fetch(result.url)
-							.then((response) => response.json())
-							.then((response) => ({ ...result, properties: { ...response }, fetched: true }))
-					return result
+				let promises = results.slice(0, 150).map((result) => {
+					return fetch(result.url).then((response) => response.json())
 				})
+				dispatch({ type: FETCH_THEM_ALL, payload: results })
 				return Promise.all(promises)
 			})
 			.then((results) => {
-				dispatch({ type: FETCH_THEM_ALL, payload: results })
+				dispatch({ type: FIRST_GENERATION_POKEMON, payload: results })
 			})
-}
-
-export function fetchPokemonProperties(pokemon) {
-	return (dispatch) =>
-		fetch(pokemon.url)
-			.then((response) => response.json())
-			.then((response) => dispatch({ type: FETCH_POKEMON, payload: response }))
 }

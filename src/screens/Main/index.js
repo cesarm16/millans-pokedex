@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { fetchAllPokemons } from '../../state/ducks/Pokemons/actions'
 import { SearchBar, Text } from '../../commons/components'
-import { useNavigationButtonPressed } from '../../commons/Helpers'
+import { useNavigationButtonPressed, getPokemonIdFromUrl } from '../../commons/Helpers'
 import Screens from '../Screens'
 import PokemonCard from './components/Card'
 import Colors from '../../commons/Colors'
@@ -68,19 +68,22 @@ function Main({ componentId }) {
 	)
 
 	const renderItem = ({ item }) => {
+		const pokemonId = getPokemonIdFromUrl(item.url)
 		return (
 			<PokemonCard
-				pokemon={item}
-				onPress={() => {
+				pokemonId={pokemonId}
+				name={item.name}
+				url={item.url}
+				onPress={(type) => {
 					Icon.getImageSource('hearto', 26, 'white').then((icon) => {
 						Navigation.push(componentId, {
 							component: {
 								name: Screens.Detail,
-								passProps: { pokemon: item },
+								passProps: { pokemonId },
 								options: {
 									animations: getAnimations(item),
 									topBar: {
-										background: { color: Colors.types[item.properties.types[0].type.name] },
+										background: { color: Colors.types[type] },
 										backButton: { color: Colors.background },
 										rightButtons: [{ id: 'right', icon }]
 									}
@@ -94,15 +97,8 @@ function Main({ componentId }) {
 
 	let items = []
 
-	if (isNumeric(search)) {
-		items = [
-			pokemons.find((e) => {
-				const urlsplit = e.url.split('/')
-				const pokemonindex = urlsplit[urlsplit.length - 2]
-				return pokemonindex == search
-			})
-		]
-	} else
+	if (isNumeric(search)) items = [pokemons.find((e) => getPokemonIdFromUrl(e.url) == search)]
+	else
 		items =
 			search.length >= 3
 				? pokemons.filter((pokemon) => {
