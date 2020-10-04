@@ -30,7 +30,7 @@ function Main({ componentId }) {
 						{
 							component: {
 								name: Screens.Camera,
-								options: { topBar: { title: { text: 'Scan a Pokémon' } } }
+								options: { topBar: { title: { text: i18n.t('scanbutton') } } }
 							}
 						}
 					]
@@ -43,7 +43,7 @@ function Main({ componentId }) {
 						{
 							component: {
 								name: Screens.Settings,
-								options: { topBar: { title: { text: 'Settings' } } }
+								options: { topBar: { title: { text: i18n.t('settings.title') } } }
 							}
 						}
 					]
@@ -125,7 +125,7 @@ function Main({ componentId }) {
 			renderItem={renderItem}
 			removeClippedSubviews
 			keyboardDismissMode="on-drag"
-			ListEmptyComponent={<Text style={{ marginLeft: 32 }}>No results</Text>}
+			ListEmptyComponent={<Text style={{ marginLeft: 32 }}>{i18n.t('noresults')}</Text>}
 			ItemSeparatorComponent={() => <View style={styles.separator}></View>}
 		/>
 	)

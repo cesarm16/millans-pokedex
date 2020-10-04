@@ -5,6 +5,7 @@ import ElevatedBox from './components/ElevatedBox'
 import { capitalizeFirstLetter } from '../../commons/Helpers'
 import { fetchPokemonSpecies } from '../../state/ducks/Species/actions'
 import { useDispatch, useSelector } from 'react-redux'
+import i18n from '../../commons/i18n'
 
 function About({ pokemonId }) {
 	if (!pokemonId) return null
@@ -12,6 +13,8 @@ function About({ pokemonId }) {
 	const dispatch = useDispatch()
 	const pokemon = useSelector((state) => state.pokemon[pokemonId])
 	const species = useSelector((state) => state.species[pokemonId])
+
+	const locale = useSelector((state) => state.app.locale)
 
 	const { sprites } = pokemon
 
@@ -21,7 +24,15 @@ function About({ pokemonId }) {
 
 	if (!species) return <ActivityIndicator />
 
-	const description = species.flavor_text_entries[44].flavor_text.replace(/(\r\n|\n|\r)/gm, ' ')
+	const description = species.flavor_text_entries
+		.find(
+			(e) =>
+				e.language.name === locale &&
+				(e.version.name === 'omega-ruby' ||
+					e.version.name === 'sword' ||
+					e.version.name === 'shield')
+		)
+		.flavor_text.replace(/(\r\n|\n|\r)/gm, ' ')
 
 	const height = pokemon.height * 10 + ' cm (' + cmToFeetInches(pokemon.height * 10) + ')'
 
@@ -36,36 +47,40 @@ function About({ pokemonId }) {
 			<Text type="description">{description}</Text>
 			<ElevatedBox style={styles.box}>
 				<View style={{ flex: 1 }}>
-					<Text type="property">Height</Text>
+					<Text type="property">{i18n.t('detail.height')}</Text>
 					<Text type="description" style={{ marginTop: 8 }}>
 						{height}
 					</Text>
 				</View>
 				<View style={{ flex: 1 }}>
-					<Text type="property">Weight</Text>
+					<Text type="property">{i18n.t('detail.weight')}</Text>
 					<Text type="description" style={{ marginTop: 8 }}>
 						{weight}
 					</Text>
 				</View>
 			</ElevatedBox>
-			<Text type="headline">Characteristics</Text>
+			<Text type="headline">{i18n.t('detail.characteristics')}</Text>
 			<View style={[styles.propertyRow, { marginTop: 16 }]}>
 				<Text type="property" style={styles.property}>
-					Name
+					{i18n.t('detail.name')}
 				</Text>
 				<Text type="description">
-					{species.names[8].name} - {species.names[0].name}
+					{capitalizeFirstLetter(pokemon.name)} -{' '}
+					{species.names.length > 0 && species.names[0].name}
 				</Text>
 			</View>
 			<View style={[styles.propertyRow, { marginTop: 16 }]}>
 				<Text type="property" style={styles.property}>
-					Species
+					{i18n.t('detail.species')}
 				</Text>
-				<Text type="description">{species.genera[7].genus}</Text>
+				<Text type="description">
+					{species.genera.length > 0 &&
+						species.genera.find((e) => e.language.name === locale).genus}
+				</Text>
 			</View>
 			<View style={styles.propertyRow}>
 				<Text type="property" style={styles.property}>
-					Gender
+					{i18n.t('detail.gender')}
 				</Text>
 				<Text type="description">
 					<Text type="description" style={{ color: 'cornflowerblue' }}>
@@ -80,25 +95,25 @@ function About({ pokemonId }) {
 			</View>
 			<View style={styles.propertyRow}>
 				<Text type="property" style={styles.property}>
-					Egg Group
+					{i18n.t('detail.egggroup')}
 				</Text>
 				<Text type="description">{eggGroup}</Text>
 			</View>
 			<View style={styles.propertyRow}>
 				<Text type="property" style={styles.property}>
-					Catch rate
+					{i18n.t('detail.catchrate')}
 				</Text>
 				<Text type="description">{species.capture_rate}</Text>
 			</View>
 			<View style={styles.propertyRow}>
 				<Text type="property" style={styles.property}>
-					Generation
+					{i18n.t('detail.generation')}
 				</Text>
 				<Text type="description">{capitalizeFirstLetter(species.generation.name)}</Text>
 			</View>
 			<View style={styles.propertyRow}>
 				<Text type="property" style={styles.property}>
-					Hatch time
+					{i18n.t('detail.hatchtime')}
 				</Text>
 				<Text type="description">
 					{species.hatch_counter} cycles - {255 * (species.hatch_counter + 1)} steps
@@ -106,16 +121,18 @@ function About({ pokemonId }) {
 			</View>
 			<View style={styles.propertyRow}>
 				<Text type="property" style={styles.property}>
-					Leveling rate
+					{i18n.t('detail.levelingrate')}
 				</Text>
-				<Text type="description">{capitalizeFirstLetter(species.growth_rate.name)}</Text>
+				<Text type="description">
+					{species.growth_rate && capitalizeFirstLetter(species.growth_rate.name)}
+				</Text>
 			</View>
 			<Text type="headline" style={{ marginTop: 24 }}>
-				Location
+				{i18n.t('detail.location')}
 			</Text>
 			<View style={styles.mockLocation}></View>
 			<Text type="headline" style={{ marginTop: 24 }}>
-				Sprites
+				{i18n.t('detail.sprites')}
 			</Text>
 			{sprites.back_default && (
 				<View style={styles.spriteContainer}>
@@ -166,7 +183,7 @@ const styles = StyleSheet.create({
 	container: { flex: 1, paddingHorizontal: 16 },
 	box: { flexDirection: 'row', marginVertical: 32 },
 	propertyRow: { flexDirection: 'row', marginTop: 16, alignItems: 'center' },
-	property: { width: 100 },
+	property: { width: 135 },
 	mockLocation: {
 		height: 150,
 		backgroundColor: 'khaki',

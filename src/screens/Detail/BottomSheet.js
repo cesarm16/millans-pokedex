@@ -3,15 +3,16 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Text } from '../../commons/components'
 import Colors from '../../commons/Colors'
 import About from './About'
+import i18n from '../../commons/i18n'
 
 function BottomSheetDetail({ pokemonId }) {
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
-				<Tab active>About</Tab>
-				<Tab>Base Stats</Tab>
-				<Tab>Evolution</Tab>
-				<Tab>Moves</Tab>
+				<Tab active>{i18n.t('detail.tabs.1')}</Tab>
+				<Tab>{i18n.t('detail.tabs.2')}</Tab>
+				<Tab>{i18n.t('detail.tabs.3')}</Tab>
+				<Tab>{i18n.t('detail.tabs.4')}</Tab>
 			</View>
 			<View style={styles.body}>
 				<About pokemonId={pokemonId}></About>
