@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 
 function Stats({ pokemonId }) {
 	const pokemon = useSelector((state) => state.pokemon[pokemonId])
-	console.log('stats', pokemon)
+
 	const { stats } = pokemon
 
 	const hp = stats.find((e) => e.stat.name === 'hp').base_stat

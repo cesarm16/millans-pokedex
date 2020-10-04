@@ -26,8 +26,7 @@ function About({ pokemonId }) {
 
 	function fetchData() {
 		if (error) setError(false)
-		dispatch(fetchPokemonSpecies(pokemon.species.url)).catch((e) => {
-			console.log('error', e)
+		dispatch(fetchPokemonSpecies(pokemon.species.url)).catch(() => {
 			setError(true)
 		})
 	}
