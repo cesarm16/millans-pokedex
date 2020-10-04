@@ -1,8 +1,7 @@
 import { FETCH_POKEMON } from './constants'
+import axios from 'axios'
 
 export function fetchPokemon(url) {
 	return (dispatch) =>
-		fetch(url)
-			.then((response) => response.json())
-			.then((response) => dispatch({ type: FETCH_POKEMON, payload: response }))
+		axios(url).then((response) => dispatch({ type: FETCH_POKEMON, payload: response.data }))
 }

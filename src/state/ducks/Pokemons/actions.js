@@ -1,13 +1,13 @@
 import { FETCH_THEM_ALL, FIRST_GENERATION_POKEMON } from './constants'
+import axios from 'axios'
 
 export function fetchAllPokemons() {
 	return (dispatch) =>
-		fetch('https://pokeapi.co/api/v2/pokemon?limit=1050')
-			.then((response) => response.json())
-			.then((json) => {
-				let { results } = json
+		axios('https://pokeapi.co/api/v2/pokemon?limit=1050')
+			.then((response) => {
+				let { results } = response.data
 				let promises = results.slice(0, 150).map((result) => {
-					return fetch(result.url).then((response) => response.json())
+					return axios(result.url).then((response) => response.data)
 				})
 				dispatch({ type: FETCH_THEM_ALL, payload: results })
 				return Promise.all(promises)
