@@ -4,17 +4,14 @@ import AsyncStorage from '@react-native-community/async-storage'
 import ReduxThunk from 'redux-thunk'
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant'
 import rootReducer from './ducks'
-import { createLogger } from 'redux-logger'
 import initialState from './utils/initialState'
 
-const middleware = __DEV__
-	? [ReduxThunk, reduxImmutableStateInvariant(), createLogger({ collapsed: true })]
-	: [ReduxThunk]
+const middleware = __DEV__ ? [ReduxThunk, reduxImmutableStateInvariant()] : [ReduxThunk]
 
 const persistConfig = {
 		key: 'root',
 		version: 0,
-		whitelist: ['app', 'pokemons', 'pokemon', 'species'],
+		whitelist: [],
 		storage: AsyncStorage
 	},
 	persistedReducer = persistReducer(persistConfig, rootReducer)

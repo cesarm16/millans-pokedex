@@ -6,7 +6,7 @@ import { fetchPokemon } from '../../../../state/ducks/Pokemon/actions'
 import StyleGuide from './StyleGuide'
 import { useDispatch, useSelector } from 'react-redux'
 
-const Card = React.memo(({ pokemonId, name, url, onPress }) => {
+const Card = React.memo(({ pokemonId, name, url, onPress, ...props }) => {
 	const pokemon = useSelector((state) => state.pokemon[pokemonId])
 
 	const dispatch = useDispatch()
@@ -41,7 +41,7 @@ const Card = React.memo(({ pokemonId, name, url, onPress }) => {
 	}
 
 	return (
-		<TouchableWithoutFeedback onPress={customOnPress} disabled={!pokemon}>
+		<TouchableWithoutFeedback onPress={customOnPress} disabled={!pokemon} {...props}>
 			<View style={[styles.container, boxStyle]}>
 				<Image source={POKEBALL} style={styles.pokeball}></Image>
 				{pokemonImg}

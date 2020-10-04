@@ -11,6 +11,9 @@ import PokemonCard from './components/Card'
 import Colors from '../../commons/Colors'
 import ButtonIds from '../ButtonIds'
 import i18n from '../../commons/i18n'
+import testIds from '../testIds'
+
+const { ACTIVITY_INDICATOR, POKEMON_LIST, SEARCH_BAR } = testIds
 
 function Main({ componentId }) {
 	const [search, setSearch] = useState('')
@@ -54,13 +57,14 @@ function Main({ componentId }) {
 	if (!data.fetched)
 		return (
 			<View style={styles.loadingContainer}>
-				<ActivityIndicator />
+				<ActivityIndicator testID={ACTIVITY_INDICATOR} />
 			</View>
 		)
 
 	const header = (
 		<View style={styles.headerContainer}>
 			<SearchBar
+				testID={SEARCH_BAR}
 				placeholder={i18n.t('searchbar')}
 				autoCapitalize="none"
 				componentId={componentId}
@@ -73,6 +77,7 @@ function Main({ componentId }) {
 		const pokemonId = getPokemonIdFromUrl(item.url)
 		return (
 			<PokemonCard
+				testID={item.name}
 				pokemonId={pokemonId}
 				name={item.name}
 				url={item.url}
@@ -116,6 +121,7 @@ function Main({ componentId }) {
 
 	return (
 		<FlatList
+			testID={POKEMON_LIST}
 			ListHeaderComponent={header}
 			columnWrapperStyle={styles.row}
 			data={items}
