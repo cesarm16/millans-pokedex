@@ -1,22 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Text } from '../../commons/components'
 import Colors from '../../commons/Colors'
 import About from './About'
+import Stats from './Stats'
 import i18n from '../../commons/i18n'
 
 function BottomSheetDetail({ pokemonId }) {
+	const [selectedTab, setSelectedTab] = useState(0)
+
+	const selected =
+		selectedTab === 0 ? (
+			<About pokemonId={pokemonId}></About>
+		) : (
+			<Stats pokemonId={pokemonId}></Stats>
+		)
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
-				<Tab active>{i18n.t('detail.tabs.1')}</Tab>
-				<Tab>{i18n.t('detail.tabs.2')}</Tab>
+				<Tab active={selectedTab === 0} onPress={() => setSelectedTab(0)}>
+					{i18n.t('detail.tabs.1')}
+				</Tab>
+				<Tab active={selectedTab === 1} onPress={() => setSelectedTab(1)}>
+					{i18n.t('detail.tabs.2')}
+				</Tab>
 				<Tab>{i18n.t('detail.tabs.3')}</Tab>
 				<Tab>{i18n.t('detail.tabs.4')}</Tab>
 			</View>
-			<View style={styles.body}>
-				<About pokemonId={pokemonId}></About>
-			</View>
+			<View style={styles.body}>{selected}</View>
 			<View style={styles.excedent}></View>
 		</View>
 	)
