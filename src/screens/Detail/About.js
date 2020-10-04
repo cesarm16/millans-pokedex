@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, ActivityIndicator, StyleSheet, Image } from 'react-native'
 import { Text } from '../../commons/components'
 import ElevatedBox from './components/ElevatedBox'
+import ErrorMessage from './components/ErrorMessage'
 import { capitalizeFirstLetter } from '../../commons/Helpers'
 import { fetchPokemonSpecies } from '../../state/ducks/Species/actions'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,6 +11,7 @@ import i18n from '../../commons/i18n'
 function About({ pokemonId }) {
 	if (!pokemonId) return null
 
+	const [error, setError] = useState(false)
 	const dispatch = useDispatch()
 	const pokemon = useSelector((state) => state.pokemon[pokemonId])
 	const species = useSelector((state) => state.species[pokemonId])
@@ -19,8 +21,18 @@ function About({ pokemonId }) {
 	const { sprites } = pokemon
 
 	useEffect(() => {
-		if (!species) dispatch(fetchPokemonSpecies(pokemon.species.url))
+		if (!species) fetchData()
 	}, [])
+
+	function fetchData() {
+		if (error) setError(false)
+		dispatch(fetchPokemonSpecies(pokemon.species.url)).catch((e) => {
+			console.log('error', e)
+			setError(true)
+		})
+	}
+
+	if (error) return <ErrorMessage onPress={fetchData}></ErrorMessage>
 
 	if (!species) return <ActivityIndicator />
 
