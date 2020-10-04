@@ -14,7 +14,7 @@ const middleware = __DEV__
 const persistConfig = {
 		key: 'root',
 		version: 0,
-		whitelist: [],
+		whitelist: ['app', 'pokemons', 'pokemon', 'species'],
 		storage: AsyncStorage
 	},
 	persistedReducer = persistReducer(persistConfig, rootReducer)
