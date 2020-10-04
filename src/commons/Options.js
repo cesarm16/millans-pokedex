@@ -8,7 +8,7 @@ function setDefaultOptions() {
 		topBar: {
 			title: { fontFamily: Platform.OS === 'ios' ? 'Avenir' : 'Roboto' },
 			largeTitle: { fontFamily: Platform.OS === 'ios' ? 'Avenir' : 'Roboto' },
-			backButton: { title: '' },
+			backButton: { title: '', color: 'black' },
 			background: { color: Colors.background },
 			borderHeight: 0,
 			noBorder: true

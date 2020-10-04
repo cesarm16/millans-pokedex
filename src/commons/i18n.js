@@ -7,11 +7,13 @@ import en from './locales/en'
 const locales = RNLocalize.getLocales()
 
 if (Array.isArray(locales)) {
-	I18n.locale = locales[0].languageTag
+	setLocale(locales[0].languageTag)
 }
 
 I18n.fallbacks = true
 I18n.translations = { es, en }
+
+export const LANGUAGES = { SPANISH: 'es', ENGLISH: 'en' }
 
 export function setLocale(locale) {
 	locale = locale.indexOf('-') === -1 ? locale : locale.substr(0, locale.indexOf('-'))

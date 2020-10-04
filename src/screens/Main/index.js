@@ -10,6 +10,7 @@ import Screens from '../Screens'
 import PokemonCard from './components/Card'
 import Colors from '../../commons/Colors'
 import ButtonIds from '../ButtonIds'
+import i18n from '../../commons/i18n'
 
 function Main({ componentId }) {
 	const [search, setSearch] = useState('')
@@ -60,6 +61,7 @@ function Main({ componentId }) {
 	const header = (
 		<View style={styles.headerContainer}>
 			<SearchBar
+				placeholder={i18n.t('searchbar')}
 				autoCapitalize="none"
 				componentId={componentId}
 				value={search}

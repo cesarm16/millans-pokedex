@@ -7,6 +7,7 @@ import Main from './Main'
 import Detail from './Detail'
 import Camera from './Camera'
 import Settings from './Settings'
+import Language from './Settings/Language'
 
 function registerScreens(store) {
 	function registerScreenWithRedux(n, ReduxScreen) {
@@ -28,6 +29,7 @@ function registerScreens(store) {
 	registerScreenWithRedux(Screens.Main, Main)
 	registerScreenWithRedux(Screens.Detail, Detail)
 	registerScreenWithRedux(Screens.Settings, Settings)
+	registerScreenWithRedux(Screens.Language, Language)
 
 	registerScreen(Screens.Camera, Camera)
 }

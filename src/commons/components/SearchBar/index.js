@@ -38,8 +38,6 @@ function SearchBar({ componentId, style, onFocus, onBlur, ...props }) {
 	)
 }
 
-SearchBar.defaultProps = { placeholder: i18n.t('searchbar') }
-
 SearchBar.propTypes = {
 	componentId: PropTypes.string.isRequired,
 	value: PropTypes.string,

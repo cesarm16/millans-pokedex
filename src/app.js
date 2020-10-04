@@ -6,6 +6,8 @@ import ButtonIds from './screens/ButtonIds'
 
 import Icon from 'react-native-vector-icons/AntDesign'
 
+import { setLocale } from './commons/i18n'
+
 import configureStore from './state/store'
 
 const { store, rehydrateStore } = configureStore()
@@ -16,6 +18,8 @@ function start() {
 	Navigation.events().registerAppLaunchedListener(async () => {
 		Navigation.dismissAllModals()
 		await rehydrateStore()
+		const { locale } = store.getState().app
+		if (locale) setLocale(locale)
 		setRoot()
 	})
 }
@@ -53,4 +57,4 @@ function setRoot() {
 
 const POKEMON = require('./assets/images/pokemon.png')
 
-export { start }
+export { start, setRoot }
