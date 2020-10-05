@@ -11,7 +11,7 @@ const middleware = __DEV__ ? [ReduxThunk, reduxImmutableStateInvariant()] : [Red
 const persistConfig = {
 		key: 'root',
 		version: 0,
-		whitelist: [],
+		whitelist: ['app', 'pokemon', 'pokemons', 'species'],
 		storage: AsyncStorage
 	},
 	persistedReducer = persistReducer(persistConfig, rootReducer)
