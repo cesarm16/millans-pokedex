@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
+import { View, StyleSheet, FlatList, ActivityIndicator, Alert } from 'react-native'
 import { Navigation } from 'react-native-navigation'
 import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/AntDesign'
@@ -26,32 +26,39 @@ function Main({ componentId }) {
 	}, [])
 
 	useNavigationButtonPressed(({ buttonId }) => {
-		if (ButtonIds.BUTTON_CAMERA === buttonId)
-			Navigation.showModal({
-				stack: {
-					children: [
-						{
-							component: {
-								name: Screens.Camera,
-								options: { topBar: { title: { text: i18n.t('scanbutton') } } }
+		switch (buttonId) {
+			case ButtonIds.BUTTON_POKEMON:
+				Alert.alert('millans-pokedex', 'Aplicación hecha por millans - github.com/cesarm16')
+				break
+			case ButtonIds.BUTTON_CAMERA:
+				Navigation.showModal({
+					stack: {
+						children: [
+							{
+								component: {
+									name: Screens.Camera,
+									options: { topBar: { title: { text: i18n.t('scanbutton') } } }
+								}
 							}
-						}
-					]
-				}
-			})
-		if (ButtonIds.BUTTON_SETTINGS === buttonId)
-			Navigation.showModal({
-				stack: {
-					children: [
-						{
-							component: {
-								name: Screens.Settings,
-								options: { topBar: { title: { text: i18n.t('settings.title') } } }
+						]
+					}
+				})
+				break
+			case ButtonIds.BUTTON_SETTINGS:
+				Navigation.showModal({
+					stack: {
+						children: [
+							{
+								component: {
+									name: Screens.Settings,
+									options: { topBar: { title: { text: i18n.t('settings.title') } } }
+								}
 							}
-						}
-					]
-				}
-			})
+						]
+					}
+				})
+				break
+		}
 	}, componentId)
 
 	if (!data.fetched)

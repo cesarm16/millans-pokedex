@@ -38,7 +38,7 @@ function setRoot() {
 										topBar: {
 											largeTitle: { visible: true },
 											title: { text: 'Pokedex' },
-											leftButtons: [{ id: 'pokemon', icon: POKEMON }],
+											leftButtons: [{ id: ButtonIds.BUTTON_POKEMON, icon: POKEMON }],
 											rightButtons: [
 												{ id: ButtonIds.BUTTON_CAMERA, icon: icons[0] },
 												{ id: ButtonIds.BUTTON_SETTINGS, icon: icons[1] }
